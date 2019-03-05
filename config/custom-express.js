@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const consign = require('consign');
-const hbs = require('hbs');
+const hbs = require('express-handlebars');
+const path = require('path');
 
 class AppController {
   constructor() {
@@ -16,6 +17,10 @@ class AppController {
     this.app.use(bodyParser.json());
     this.app.use(express.static('./public'));
 
+    this.app.engine('hbs', hbs({
+      extname: 'hbs', defaultLayout: 'layout', layoutsDir: 'views/layouts/'
+    }));
+    this.app.set('views', 'views');
     this.app.set('view engine', 'hbs');
   }
 
