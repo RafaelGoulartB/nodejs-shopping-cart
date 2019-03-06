@@ -29,6 +29,7 @@ class AppController {
 
     consign()
         .include('routes')
+        .then('dao')
         .into(this.app);
   }
 }
