@@ -7,7 +7,7 @@ class userDAO {
 
   saveUser(email, password) {
     return new Promise((resolve, reject) => {
-      this.connection.query('SELECT * FROM `users` WHERE email = ?', email,
+      this.connection.query('SELECT email FROM `users` WHERE email = ?', email,
       (err, result) => {
 
         const isResultEmpty = Object.entries(result).length === 0;
