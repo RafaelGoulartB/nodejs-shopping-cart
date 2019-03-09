@@ -25,6 +25,8 @@ class AppController {
     this.app.use(bodyParser.json());
     this.app.use(csrf({ cookie: true }))
 
+
+
     this.app.use(express.static('./public'));
     this.app.engine('hbs', hbs({
       extname: 'hbs', defaultLayout: 'layout', layoutsDir: 'views/layouts/'
