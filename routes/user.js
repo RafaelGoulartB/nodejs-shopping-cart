@@ -1,6 +1,11 @@
 module.exports = app => {
   // Sign Up
   app.get('/user/signup', (req, res, next) => {
+    if (req.session['user'] || req.session['user'] != null) {
+      req.session['warning'] = 'You are not able to access this area!';
+      return res.redirect('/')
+    }
+
     const success = req.session['success'];
     req.session['success'] = null;
     const warning = req.session['warning'];
@@ -10,6 +15,7 @@ module.exports = app => {
       title: 'Sign Up',
       csrfToken: req.csrfToken(),
       success, warning,
+      login: req.session['user'],
     });
   });
 
@@ -31,6 +37,7 @@ module.exports = app => {
     userDao.saveUser(email, password)
       .then(result => {
         req.session['success'] = result;
+        req.session['user'] = email;
         res.redirect('/');
       })
       .catch(err => {
@@ -41,6 +48,11 @@ module.exports = app => {
   });
   // Sign In
   app.get('/user/signin', (req, res) => {
+    if (req.session['user'] || req.session['user'] != null) {
+      req.session['warning'] = 'You are not able to access this area!';
+      return res.redirect('/')
+    }
+
     const success = req.session['success'];
     req.session['success'] = null;
     const warning = req.session['warning'];
@@ -50,6 +62,7 @@ module.exports = app => {
       title: 'Sign In',
       csrfToken: req.csrfToken(),
       success, warning,
+      login: req.session['user'],
     });
   });
   app.post('/user/signin', (req, res) => {
@@ -69,6 +82,7 @@ module.exports = app => {
 
     userDao.login(email, password)
       .then(result => {
+        req.session['user'] = email;
         req.session['success'] = result;
         res.redirect('/user/profile');
       })
@@ -81,6 +95,11 @@ module.exports = app => {
 
   // Profile
   app.get('/user/profile', (req, res) => {
+    if (!req.session['user'] || req.session['user'] == null) {
+      req.session['warning'] = 'You do not have permission to access this area!';
+      return res.redirect('/');
+    }
+
     const success = req.session['success'];
     req.session['success'] = null;
     const warning = req.session['warning'];
@@ -88,9 +107,19 @@ module.exports = app => {
 
     res.render('user/profile', {
       title: 'Profile',
-      success, warning
+      success, warning,
+      login: req.session['user'],
     });
   });
 
+  app.get('/user/logout', (req, res) => {
+    if (!req.session['user'] || req.session['user'] == null) {
+      req.session['warning'] = 'You do not have permission to access this area!';
+      return res.redirect('/');
+    }
+
+    req.session['user'] = null;
+    res.redirect('/');
+  });
 
 }

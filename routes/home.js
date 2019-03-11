@@ -14,6 +14,7 @@ module.exports = app => {
           title: 'Shopping Cart',
           products,
           success, warning,
+          login: req.session['user'],
       }
       ))
       .catch(err => res.status(400).send(err));
