@@ -28,6 +28,19 @@ class userDAO {
     });
   }
 
+  login(email, password) {
+    return new Promise((resolve, reject) => {
+      this.connection.query('SELECT * FROM `users` WHERE email = ?', email, (err, result) => {
+        if (Object.entries(result).length > 0) {
+          const isPasswordCorrect = bcrypt.compareSync(password, result[0].passw);
+          if (isPasswordCorrect) return resolve('Welcome to Shopping Cart!');
+          else return reject('Password is incorrect');
+        }
+        else if (err) return reject(err);
+        else return reject('Email is not in system, please Sign Up.');
+      })
+    })
+  }
 
 
 }
