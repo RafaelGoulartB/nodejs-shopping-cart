@@ -5,6 +5,7 @@ const hbs = require('express-handlebars');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const csrf = require('csurf');
+const validator = require('express-validator');
 
 class AppController {
   constructor() {
@@ -25,7 +26,7 @@ class AppController {
     this.app.use(bodyParser.json());
     this.app.use(csrf({ cookie: true }))
 
-
+    this.app.use(validator());
 
     this.app.use(express.static('./public'));
     this.app.engine('hbs', hbs({
