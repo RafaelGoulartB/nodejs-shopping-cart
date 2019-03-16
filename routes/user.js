@@ -16,6 +16,7 @@ module.exports = app => {
       csrfToken: req.csrfToken(),
       success, warning,
       login: req.session['user'],
+      numOfitemsInCart: req.cookies['productsid-in-cart'].length,
     });
   });
 
@@ -63,6 +64,7 @@ module.exports = app => {
       csrfToken: req.csrfToken(),
       success, warning,
       login: req.session['user'],
+      numOfitemsInCart: req.cookies['productsid-in-cart'].length,
     });
   });
   app.post('/user/signin', (req, res) => {
@@ -109,6 +111,7 @@ module.exports = app => {
       title: 'Profile',
       success, warning,
       login: req.session['user'],
+      numOfitemsInCart: req.cookies['productsid-in-cart'].length,
     });
   });
 

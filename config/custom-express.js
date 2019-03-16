@@ -20,7 +20,8 @@ class AppController {
     this.app.use(session({
       secret: 'secretpasssession',
       resave: false,
-      saveUninitialized: false
+      saveUninitialized: false,
+      cookie: { maxAge: 36000*1000*60 },
     }));
     this.app.use(bodyParser.urlencoded( {extended: true} ));
     this.app.use(bodyParser.json());

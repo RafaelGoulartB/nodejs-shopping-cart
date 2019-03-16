@@ -13,6 +13,7 @@ module.exports = app => {
       {
           title: 'Shopping Cart',
           products,
+          numOfitemsInCart: req.cookies['productsid-in-cart'].length,
           success, warning,
           login: req.session['user'],
       }

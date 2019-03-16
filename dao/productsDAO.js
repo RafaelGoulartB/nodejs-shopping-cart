@@ -17,6 +17,17 @@ class productsDAO {
       });
     }); // End Promise
   }; // End list
+
+  getByIds(ids) {
+    return new Promise((resolve, reject) => {
+      this.connection
+        .query(`SELECT * FROM products WHERE id in (${ids})` , (err, result) => {
+          if (err) return reject(err);
+          return resolve(result);
+        });
+    });
+  };
+
 }
 
 module.exports = () => productsDAO;
