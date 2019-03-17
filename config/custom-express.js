@@ -16,22 +16,22 @@ class AppController {
   }
 
   middlewares() {
-    this.app.use(cookieParser())
+    this.app.use(cookieParser());
     this.app.use(session({
       secret: 'secretpasssession',
       resave: false,
       saveUninitialized: false,
-      cookie: { maxAge: 36000*1000*60 },
+      cookie: {maxAge: 36000*1000*60},
     }));
     this.app.use(bodyParser.urlencoded( {extended: true} ));
     this.app.use(bodyParser.json());
-    this.app.use(csrf({ cookie: true }))
+    this.app.use(csrf({cookie: true}));
 
     this.app.use(validator());
 
     this.app.use(express.static('./public'));
     this.app.engine('hbs', hbs({
-      extname: 'hbs', defaultLayout: 'layout', layoutsDir: 'views/layouts/'
+      extname: 'hbs', defaultLayout: 'layout', layoutsDir: 'views/layouts/',
     }));
     this.app.set('views', 'views');
     this.app.set('view engine', 'hbs');

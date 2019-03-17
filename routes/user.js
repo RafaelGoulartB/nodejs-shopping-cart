@@ -1,9 +1,9 @@
-module.exports = app => {
+module.exports = (app) => {
   // Sign Up
   app.get('/user/signup', (req, res, next) => {
     if (req.session['user'] || req.session['user'] != null) {
       req.session['warning'] = 'You are not able to access this area!';
-      return res.redirect('/')
+      return res.redirect('/');
     }
 
     const success = req.session['success'];
@@ -30,7 +30,7 @@ module.exports = app => {
     const userDao = new app.dao.userDAO(connection);
 
     req.checkBody('email', 'Please enter with a valid email!').isEmail().notEmpty();
-    req.checkBody('password', 'The password must be at least 4 digits!').notEmpty().isLength({min:4});
+    req.checkBody('password', 'The password must be at least 4 digits!').notEmpty().isLength({min: 4});
     const errosInValidation = req.validationErrors();
     if (errosInValidation) {
       req.session['warning'] = errosInValidation[0].msg;
@@ -39,22 +39,22 @@ module.exports = app => {
     }
 
     userDao.saveUser(email, password)
-      .then(result => {
-        req.session['success'] = result;
-        req.session['user'] = email;
-        res.redirect('/');
-      })
-      .catch(err => {
-        req.session['warning'] = err;
-        res.redirect('/user/signup');
-        return;
-      });
+        .then((result) => {
+          req.session['success'] = result;
+          req.session['user'] = email;
+          res.redirect('/');
+        })
+        .catch((err) => {
+          req.session['warning'] = err;
+          res.redirect('/user/signup');
+          return;
+        });
   });
   // Sign In
   app.get('/user/signin', (req, res) => {
     if (req.session['user'] || req.session['user'] != null) {
       req.session['warning'] = 'You are not able to access this area!';
-      return res.redirect('/')
+      return res.redirect('/');
     }
 
     const success = req.session['success'];
@@ -89,16 +89,16 @@ module.exports = app => {
     }
 
     userDao.login(email, password)
-      .then(result => {
-        req.session['user'] = email;
-        req.session['success'] = result;
-        res.redirect('/user/profile');
-      })
-      .catch(err => {
-        req.session['warning'] = err;
-        res.redirect('/user/signin');
-        return;
-      });
+        .then((result) => {
+          req.session['user'] = email;
+          req.session['success'] = result;
+          res.redirect('/user/profile');
+        })
+        .catch((err) => {
+          req.session['warning'] = err;
+          res.redirect('/user/signin');
+          return;
+        });
   });
 
   // Profile
@@ -133,5 +133,4 @@ module.exports = app => {
     req.session['user'] = null;
     res.redirect('/');
   });
-
-}
+};

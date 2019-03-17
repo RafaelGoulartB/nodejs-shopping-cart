@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 const app = require('./config/custom-express');
 
 const HOST = process.env.HOST;
