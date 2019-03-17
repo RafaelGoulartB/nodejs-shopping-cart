@@ -1,17 +1,18 @@
 module.exports = app => {
+  //Cart
   app.get('/cart', (req, res) => {
     const success = req.session['success'];
     req.session['success'] = null;
     const warning = req.session['warning'];
     req.session['warning'] = null;
 
-    const productsIdInCart = req.cookies['productsid-in-cart'];
+    const productsIdInCart = req.cookies['productsid-in-cart'] || [];
     if (productsIdInCart.length == 0)
       return res.status(200).render('cart/index', {
         title: 'Cart',
         products: [],
         warning: `You don't add items in your cart!`,
-        numOfitemsInCart: req.cookies['productsid-in-cart'].length,
+        numOfitemsInCart: productsIdInCart.length,
       });
 
     const connection = app.dao.connectionFactory();
@@ -28,13 +29,48 @@ module.exports = app => {
             title: 'Cart',
             products,
             success, warning,
-            numOfitemsInCart: req.cookies['productsid-in-cart'].length,
+            numOfitemsInCart: productsIdInCart.length,
             totalPrice,
           }
         )
       })
       .catch(err => res.status(400).send(err));
+  });
+  // Checkout
+  app.get('/cart/checkout', (req, res) => {
+    const success = req.session['success'];
+    req.session['success'] = null;
+    const warning = req.session['warning'];
+    req.session['warning'] = null;
 
+    const productsIdInCart = req.cookies['productsid-in-cart'] || [];
+    if (productsIdInCart.length == 0)
+      return res.status(200).render('cart/index', {
+        title: 'Cart',
+        products: [],
+        warning: `You don't add items in your cart!`,
+        numOfitemsInCart: productsIdInCart.length,
+      });
+
+    const connection = app.dao.connectionFactory();
+    const ProductsDao = new app.dao.productsDAO(connection);
+    ProductsDao.getByIds(productsIdInCart)
+    .then(products => {
+      let totalPrice = 0;
+      products.forEach(product => {
+        totalPrice += product.price;
+      });
+      res.status(200).render('cart/checkout',
+        {
+          title: 'Cart',
+          products,
+          success, warning,
+          numOfitemsInCart: productsIdInCart.length,
+          totalPrice,
+        }
+      )
+    })
+    .catch(err => res.status(400).send(err));
   });
 
   app.get('/cart/add-to-cart/:id', (req, res) => {

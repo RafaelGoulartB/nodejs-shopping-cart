@@ -11,12 +11,15 @@ module.exports = app => {
     const warning = req.session['warning'];
     req.session['warning'] = null;
 
+    let productsIdInCart = req.cookies['productsid-in-cart'];
+    if (productsIdInCart == undefined) productsIdInCart = [];
+
     res.render('user/signup', {
       title: 'Sign Up',
       csrfToken: req.csrfToken(),
       success, warning,
       login: req.session['user'],
-      numOfitemsInCart: req.cookies['productsid-in-cart'].length,
+      numOfitemsInCart: productsIdInCart.length,
     });
   });
 
@@ -59,12 +62,15 @@ module.exports = app => {
     const warning = req.session['warning'];
     req.session['warning'] = null;
 
+    let productsIdInCart = req.cookies['productsid-in-cart'];
+    if (productsIdInCart == undefined) productsIdInCart = [];
+
     res.render('user/signin', {
       title: 'Sign In',
       csrfToken: req.csrfToken(),
       success, warning,
       login: req.session['user'],
-      numOfitemsInCart: req.cookies['productsid-in-cart'].length,
+      numOfitemsInCart: productsIdInCart.length,
     });
   });
   app.post('/user/signin', (req, res) => {
@@ -107,11 +113,14 @@ module.exports = app => {
     const warning = req.session['warning'];
     req.session['warning'] = null;
 
+    let productsIdInCart = req.cookies['productsid-in-cart'];
+    if (productsIdInCart == undefined) productsIdInCart = [];
+
     res.render('user/profile', {
       title: 'Profile',
       success, warning,
       login: req.session['user'],
-      numOfitemsInCart: req.cookies['productsid-in-cart'].length,
+      numOfitemsInCart: productsIdInCart.length,
     });
   });
 

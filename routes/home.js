@@ -6,6 +6,9 @@ module.exports = app => {
     const warning = req.session['warning'];
     req.session['warning'] = null;
 
+    let productsIdInCart = req.cookies['productsid-in-cart'];
+    if (productsIdInCart == undefined) productsIdInCart = [];
+
     const connection = app.dao.connectionFactory();
     const productsDAO = new app.dao.productsDAO(connection);
     productsDAO.list()
@@ -13,7 +16,7 @@ module.exports = app => {
       {
           title: 'Shopping Cart',
           products,
-          numOfitemsInCart: req.cookies['productsid-in-cart'].length,
+          numOfitemsInCart: productsIdInCart.length,
           success, warning,
           login: req.session['user'],
       }
