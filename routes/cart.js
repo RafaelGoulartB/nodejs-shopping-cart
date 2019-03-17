@@ -1,10 +1,7 @@
 module.exports = (app) => {
   // Cart
   app.get('/cart', (req, res) => {
-    const success = req.session['success'];
-    req.session['success'] = null;
-    const warning = req.session['warning'];
-    req.session['warning'] = null;
+    let success, warning = app.helpers.msg(req);
 
     const productsIdInCart = req.cookies['productsid-in-cart'] || [];
     if (productsIdInCart.length == 0) {
@@ -22,9 +19,9 @@ module.exports = (app) => {
     productsDao.getByIds(productsIdInCart)
         .then((products) => {
           let totalPrice = 0;
-          products.forEach((product) => {
-            totalPrice += product.price;
-          });
+          products.forEach((product) =>
+            totalPrice += product.price
+          );
           res.status(200).render('cart/index',
               {
                 title: 'Cart',
@@ -39,10 +36,7 @@ module.exports = (app) => {
   });
   // Checkout
   app.get('/cart/checkout', (req, res) => {
-    const success = req.session['success'];
-    req.session['success'] = null;
-    const warning = req.session['warning'];
-    req.session['warning'] = null;
+    let success, warning = app.helpers.msg(req);
 
     const productsIdInCart = req.cookies['productsid-in-cart'] || [];
     if (productsIdInCart.length == 0) {

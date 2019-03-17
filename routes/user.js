@@ -5,11 +5,7 @@ module.exports = (app) => {
       req.session['warning'] = 'You are not able to access this area!';
       return res.redirect('/');
     }
-
-    const success = req.session['success'];
-    req.session['success'] = null;
-    const warning = req.session['warning'];
-    req.session['warning'] = null;
+    let success, warning = app.helpers.msg(req);
 
     let productsIdInCart = req.cookies['productsid-in-cart'];
     if (productsIdInCart == undefined) productsIdInCart = [];
@@ -57,10 +53,7 @@ module.exports = (app) => {
       return res.redirect('/');
     }
 
-    const success = req.session['success'];
-    req.session['success'] = null;
-    const warning = req.session['warning'];
-    req.session['warning'] = null;
+    let success, warning = app.helpers.msg(req);
 
     let productsIdInCart = req.cookies['productsid-in-cart'];
     if (productsIdInCart == undefined) productsIdInCart = [];
@@ -107,11 +100,8 @@ module.exports = (app) => {
       req.session['warning'] = 'You do not have permission to access this area!';
       return res.redirect('/');
     }
+    let success, warning = app.helpers.msg(req);
 
-    const success = req.session['success'];
-    req.session['success'] = null;
-    const warning = req.session['warning'];
-    req.session['warning'] = null;
 
     let productsIdInCart = req.cookies['productsid-in-cart'];
     if (productsIdInCart == undefined) productsIdInCart = [];

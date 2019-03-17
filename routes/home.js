@@ -1,9 +1,6 @@
 module.exports = (app) => {
   app.get('/', (req, res) => {
-    const success = req.session['success'];
-    req.session['success'] = null;
-    const warning = req.session['warning'];
-    req.session['warning'] = null;
+    let success, warning = app.helpers.msg(req);
 
     let productsIdInCart = req.cookies['productsid-in-cart'];
     if (productsIdInCart == undefined) productsIdInCart = [];
